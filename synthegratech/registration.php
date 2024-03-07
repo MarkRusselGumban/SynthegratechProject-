@@ -10,8 +10,9 @@ if ($conn->connect_error) {
 $name = $_POST['name'];
 $email = $_POST['email'];
 $password = $_POST['password'];
-$stmt = $conn->prepare("INSERT INTO useraccounts (name, email, password) VALUES (?, ?, ?)");
-$stmt->bind_param("sss", $name, $email, $password);
+$type = "user";
+$stmt = $conn->prepare("INSERT INTO useraccounts (name, email, password,type) VALUES (?, ?, ?, ?)");
+$stmt->bind_param("sss", $name, $email, $password,$type);
 
 if ($stmt->execute() === TRUE) {
     echo "Registered! you can now login";

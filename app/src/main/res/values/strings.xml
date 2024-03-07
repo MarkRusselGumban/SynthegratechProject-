@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">SynthegratechInsertion</string>
+    <string name="app_name">Synthegratech</string>
+    <string name="title_activity_user_dashboard">UserDashboard</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Account</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_user_panel">UserPanel</string>
 </resources>

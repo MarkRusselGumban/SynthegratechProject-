@@ -1,8 +1,11 @@
 package com.example.synthegratechinsertion;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void run() {
                         HttpURLConnection urlConnection = null;
                         try {
-                            URL url = new URL("http://localhost/synthegratech/registration.php");
+                            URL url = new URL("http://10.0.2.2/synthegratech/registration.php");
                             urlConnection = (HttpURLConnection) url.openConnection();
                             urlConnection.setRequestMethod("POST");
                             urlConnection.setDoOutput(true);
@@ -54,10 +57,25 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                             reader.close();
                             inputStream.close();
+                            Log.d("Registration Response", response.toString());
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(RegisterActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                    builder.setTitle("Registration Status");
+                                    if (response.toString().trim().equals("Registration successful")) {
+                                        builder.setMessage("Registration successful!");
+                                    } else {
+                                        builder.setMessage(response.toString());
+                                    }
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
                                 }
                             });
                         } catch (IOException e) {
@@ -65,7 +83,17 @@ public class RegisterActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(RegisterActivity.this, "Registration failed! Please try again later.", Toast.LENGTH_SHORT).show();
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                    builder.setTitle("Registration Status");
+                                    builder.setMessage("Registration failed! Please try again later.");
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
                                 }
                             });
                         } finally {
@@ -78,6 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
                 thread.start();
             }
         });
+
         lButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
